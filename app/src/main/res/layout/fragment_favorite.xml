@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="test.ids.sgv.ids_testtask.ListFragment">
+    tools:context="test.ids.sgv.ids_testtask.MainListFragment">
 
     <TextView
     android:text="tttttt"

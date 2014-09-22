@@ -52,9 +52,10 @@ public class SearchEngine {
         list.setFileType("jpg");
         list.setGooglehost("google.com");
         list.setNum(num);
+        Log.d(SearchEngine.class.getSimpleName(),"SEARCH ENGINE IS CREATED");
     }
 
-    public synchronized List<ResultWrapper> getResult() {
+    public List<ResultWrapper> getResult() {
 
         List<ResultWrapper> resultWrappers = null;
         list.setStart(start);
@@ -70,6 +71,7 @@ public class SearchEngine {
         } catch (IOException e) {
             Log.e(SearchEngine.class.getSimpleName(),e.toString());
         }
+        Log.d(SearchEngine.class.getSimpleName(),"RESULTS: " + resultWrappers.toString());
         return resultWrappers;
     }
 
@@ -99,6 +101,7 @@ public class SearchEngine {
             ResultWrapper resultWrapper = getWrapper(result);
             if(resultWrapper != null){
                 resultWrappers.add(resultWrapper);
+                Log.i(SearchEngine.class.getSimpleName(),resultWrapper.toString());
             }
         }
         return resultWrappers;

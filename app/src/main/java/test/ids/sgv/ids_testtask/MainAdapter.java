@@ -21,6 +21,11 @@ public class MainAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater lInflater;
 
+    public MainAdapter(Context context){
+        this.context = context;
+        lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
     public MainAdapter(Context context, List<ResultWrapper> list){
         this.context = context;
         this.resultWrapperList = list;
@@ -29,7 +34,11 @@ public class MainAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return resultWrapperList.size();
+        int result = 0;
+        if(resultWrapperList != null){
+            result = resultWrapperList.size();
+        }
+        return result;
     }
 
     @Override
@@ -61,6 +70,11 @@ public class MainAdapter extends BaseAdapter {
 //        Picasso.with(context).load(resultWrapper.getUrl()).into(mImageView);
         title.setText(resultWrapper.getTitle());
         return view;
+    }
+
+    public void setResultWrapperList(List<ResultWrapper> list){
+        this.resultWrapperList = list;
+        this.notifyDataSetChanged();
     }
 
     public void addResults(List<ResultWrapper> list){

@@ -31,7 +31,7 @@ public class MyActivity extends SherlockFragmentActivity {
     private void initialiseViewPager() {
 
         List<Fragment> fragments = new Vector<Fragment>();
-        fragments.add(ListFragment.newInstance(0));
+        fragments.add(MainListFragment.newInstance(0));
         fragments.add(FavoriteFragment.newInstance(1));
 
         this.pagerAdapter = new MyFragmentPagerAdapter(super.getSupportFragmentManager(), fragments);
