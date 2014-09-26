@@ -55,7 +55,7 @@ public class SearchEngine {
         Log.d(SearchEngine.class.getSimpleName(),"SEARCH ENGINE IS CREATED");
     }
 
-    public List<ResultWrapper> getResult() {
+    public synchronized List<ResultWrapper> getResult() {
 
         List<ResultWrapper> resultWrappers = null;
         list.setStart(start);
