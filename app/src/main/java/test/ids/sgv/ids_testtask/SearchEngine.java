@@ -44,7 +44,8 @@ public class SearchEngine {
         try {
             list = customsearch.cse().list(query);
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.e(SearchEngine.class.getSimpleName(),e.toString());
         }
         list.setKey("AIzaSyAamYR0fn4fU90UYoyO5r6epPTkkKg55Xw");
         list.setCx("006550512854887181422:hhghfbg29ie");

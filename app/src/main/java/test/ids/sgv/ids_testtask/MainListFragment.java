@@ -1,5 +1,7 @@
 package test.ids.sgv.ids_testtask;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,8 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import java.util.List;
 
@@ -32,9 +38,12 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     private View footer;
     private static final String TAG = MainListFragment.class.getSimpleName();
 
-    static MainListFragment newInstance(int page) {
-        MainListFragment pageFragment = new MainListFragment();
-        return pageFragment;
+    static MainListFragment newInstance(String query) {
+        MainListFragment mainListFragment = new MainListFragment();
+        Bundle data = new Bundle();
+        data.putString("query", query);
+        mainListFragment.setArguments(data);
+        return mainListFragment;
     }
 
     public MainListFragment() {
@@ -47,13 +56,19 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_list, null);
         footer = view.findViewById(R.id.progress);
         mHandler = new LoaderHandler();
+
         mListView = (ListView) view.findViewById(R.id.list);
         mainAdapter = new MainAdapter(getActivity());
         mListView.setAdapter(mainAdapter);
-        searchEngine = new SearchEngine("pig");
+        String query = getArguments().getString("query");
+        if(query != null){
+            searchEngine = new SearchEngine(query);
+        }
+        searchEngine = null;
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
@@ -67,21 +82,10 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
                 currentVisibleItemCount = visibleItemCount;
             }
         });
-
+        this.setHasOptionsMenu(true);
         getActivity().getSupportLoaderManager().initLoader(LIST_LOADER_CONST,null,this);
         return view;
     }
-
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//    }
 
     @Override
     public Loader<List<ResultWrapper>> onCreateLoader(int id, Bundle args) {
@@ -92,7 +96,9 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<List<ResultWrapper>> loader, List<ResultWrapper> data) {
-        mainAdapter.setResultWrapperList(data);
+        if(data != null){
+            mainAdapter.setResultWrapperList(data);
+        }
         Log.d(MainListFragment.class.getSimpleName(), "OnLoaderFinished");
     }
 
@@ -100,6 +106,47 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     public void onLoaderReset(Loader<List<ResultWrapper>> loader) {
         mainAdapter.setResultWrapperList(null);
         Log.d(MainListFragment.class.getSimpleName(), "OnLoaderReset");
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        MyActivity activity = (MyActivity) getActivity();
+        activity.getSupportMenuInflater().inflate(R.menu.menu, menu);
+        SearchManager searchManager = (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        if (null != searchView) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, newText);
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, query);
+                searchEngine = new SearchEngine(query);
+                MainListFragment.this.getLoaderManager().restartLoader(LIST_LOADER_CONST, null, MainListFragment.this);
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(queryTextListener);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.save:
+                Log.d(TAG, "SAVE");
+
+                return true;
+
+            default: return false;
+        }
     }
 
     private void isScrollCompleted() {

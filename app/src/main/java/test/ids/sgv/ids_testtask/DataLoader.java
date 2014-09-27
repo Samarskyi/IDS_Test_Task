@@ -25,9 +25,12 @@ public class DataLoader extends AsyncTaskLoader<List<ResultWrapper>> {
 
     @Override
     public List<ResultWrapper> loadInBackground() {
-        List<ResultWrapper> wrapperList = searchEngine.getResult();
-        this.wrapperList = wrapperList;
-        return this.wrapperList;
+        if(searchEngine != null){
+            List<ResultWrapper> wrapperList = searchEngine.getResult();
+            this.wrapperList = wrapperList;
+            return this.wrapperList;
+        }
+       else return  null;
     }
 
     @Override
