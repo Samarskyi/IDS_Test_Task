@@ -1,4 +1,4 @@
-package test.ids.sgv.ids_testtask;
+package test.ids.sgv.ids_testtask.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -22,6 +22,12 @@ import com.actionbarsherlock.view.MenuItem;
 
 import java.util.List;
 
+import test.ids.sgv.ids_testtask.R;
+import test.ids.sgv.ids_testtask.db.DAO;
+import test.ids.sgv.ids_testtask.model.MainAdapter;
+import test.ids.sgv.ids_testtask.model.ResultWrapper;
+import test.ids.sgv.ids_testtask.model.SearchEngine;
+
 
 public class MainListFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<List<ResultWrapper>> {
 
@@ -33,9 +39,8 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     private LoaderHandler mHandler;
     private SearchEngine searchEngine;
     private MainAdapter mainAdapter;
+    private DAO dao;
     private static final int LIST_LOADER_CONST = 1;
-    private LayoutInflater inflater;
-    private View footer;
     private static final String TAG = MainListFragment.class.getSimpleName();
 
     static MainListFragment newInstance(String query) {
@@ -58,9 +63,8 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_list, null);
-        footer = view.findViewById(R.id.progress);
         mHandler = new LoaderHandler();
-
+        dao = new DAO(getActivity());
         mListView = (ListView) view.findViewById(R.id.list);
         mainAdapter = new MainAdapter(getActivity());
         mListView.setAdapter(mainAdapter);
@@ -89,9 +93,15 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
 
     @Override
     public Loader<List<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-//        if(id == LIST_LOADER_CONST){
-            Log.d(MainListFragment.class.getSimpleName(), "OnCreateLoader");
-            return new DataLoader(getActivity(),searchEngine);
+        Log.d(MainListFragment.class.getSimpleName(), "OnCreateLoader");
+
+        switch (id) {
+            case LIST_LOADER_CONST:
+                return new DataLoader(getActivity(), searchEngine);
+
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -99,13 +109,13 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
         if(data != null){
             mainAdapter.setResultWrapperList(data);
         }
-        Log.d(MainListFragment.class.getSimpleName(), "OnLoaderFinished");
+        Log.d(TAG, "OnLoaderFinished");
     }
 
     @Override
     public void onLoaderReset(Loader<List<ResultWrapper>> loader) {
         mainAdapter.setResultWrapperList(null);
-        Log.d(MainListFragment.class.getSimpleName(), "OnLoaderReset");
+        Log.d(TAG, "OnLoaderReset");
     }
 
 
@@ -142,7 +152,9 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
         switch (item.getItemId()) {
             case R.id.save:
                 Log.d(TAG, "SAVE");
-
+//                Log.d(TAG,  mainAdapter.getChosenItems().size()+" - size");
+                mainAdapter.deselect();
+                dao.insertResultWrapper( mainAdapter.getChosenItems());
                 return true;
 
             default: return false;

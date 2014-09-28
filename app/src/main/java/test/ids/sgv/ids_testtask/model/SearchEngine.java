@@ -1,4 +1,4 @@
-package test.ids.sgv.ids_testtask;
+package test.ids.sgv.ids_testtask.model;
 
 import android.util.Log;
 
@@ -44,7 +44,6 @@ public class SearchEngine {
         try {
             list = customsearch.cse().list(query);
         } catch (IOException e) {
-//            e.printStackTrace();
             Log.e(SearchEngine.class.getSimpleName(),e.toString());
         }
         list.setKey("AIzaSyAamYR0fn4fU90UYoyO5r6epPTkkKg55Xw");
@@ -72,7 +71,7 @@ public class SearchEngine {
         } catch (IOException e) {
             Log.e(SearchEngine.class.getSimpleName(),e.toString());
         }
-        Log.d(SearchEngine.class.getSimpleName(),"RESULTS: " + resultWrappers.toString());
+
         return resultWrappers;
     }
 

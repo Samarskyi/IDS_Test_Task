@@ -1,28 +1,28 @@
-package test.ids.sgv.ids_testtask;
+package test.ids.sgv.ids_testtask.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 
 import java.util.List;
 import java.util.Vector;
 
+import test.ids.sgv.ids_testtask.R;
+
 
 public class MyActivity extends SherlockFragmentActivity {
 
-    static final String TAG = "myLogs";
-    ViewPager pager;
-    MyFragmentPagerAdapter pagerAdapter;
-    List<Fragment> fragments;
-//    MyFragmentPagerAdapter pagerAdapter2;
-    String q;
+    static final String TAG = MyActivity.class.getSimpleName();
+    private ViewPager pager;
+    private MyFragmentPagerAdapter pagerAdapter;
+    private List<Fragment> fragments;
+    private String q;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,61 +34,25 @@ public class MyActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-        super.onCreateOptionsMenu(menu);
-//        getSupportMenuInflater().inflate(R.menu.menu, menu);
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-//        if (null != searchView) {
-//            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//            searchView.setIconifiedByDefault(false);
-//        }
-//        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-//            public boolean onQueryTextChange(String newText) {
-////                adapter.getFilter().filter(newText);
-//                Log.d(TAG, newText);
-//                return true;
-//            }
-//
-//            public boolean onQueryTextSubmit(String query) {
-////
-//                Log.d(TAG, query);
-//                q = query;
-////                pagerAdapter.replaceFragment(0,MainListFragment.newInstance(query));
-//                return true;
-//            }
-//        };
-//        searchView.setOnQueryTextListener(queryTextListener);
-        return true;
-
-    }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.save:
-                Log.d(TAG, "SAVE");
-                return true;
-
-            default: return super.onMenuItemSelected(featureId, item);
-        }
-
+//        super.onCreateOptionsMenu(menu);
+        return  super.onCreateOptionsMenu(menu);
     }
 
     private void initialiseViewPager() {
 
         fragments = new Vector<Fragment>();
         fragments.add(MainListFragment.newInstance(null));
-        fragments.add(FavoriteFragment.newInstance(0));
+        fragments.add(FavoriteFragment.newInstance());
 
         this.pagerAdapter = new MyFragmentPagerAdapter(super.getSupportFragmentManager(), fragments);
         this.pager.setAdapter(pagerAdapter);
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+
         private List<Fragment> fragments;
         static final int NUM_ITEMS = 2;
-        private  FragmentManager mFragmentManager;
+        private FragmentManager mFragmentManager;
         private Fragment mFragmentAtPos0;
 
         public MyFragmentPagerAdapter(FragmentManager fm) {
@@ -107,9 +71,8 @@ public class MyActivity extends SherlockFragmentActivity {
                 case 0:
                     return MainListFragment.newInstance(q);
                 case 1:
-                    return FavoriteFragment.newInstance(0);
+                    return FavoriteFragment.newInstance();
 
-//            return fragments.get(position);
                 default: return null;
             }
         }
@@ -120,7 +83,6 @@ public class MyActivity extends SherlockFragmentActivity {
         }
 
         public void replaceFragment(int i, SherlockFragment f){
-//            int containerViewId = getResources().getIdentifier("pager", "id", getPackageName());
             getSupportFragmentManager().beginTransaction().replace(R.id.pager,f).commit();
         }
     }

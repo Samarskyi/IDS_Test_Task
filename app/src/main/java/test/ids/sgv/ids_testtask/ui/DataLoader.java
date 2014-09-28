@@ -1,10 +1,13 @@
-package test.ids.sgv.ids_testtask;
+package test.ids.sgv.ids_testtask.ui;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import java.util.List;
+
+import test.ids.sgv.ids_testtask.model.ResultWrapper;
+import test.ids.sgv.ids_testtask.model.SearchEngine;
 
 /**
  * Created by sgv on 22.09.2014.
