@@ -31,7 +31,7 @@ public class SearchEngine {
     long num = 0;
     Customsearch.Cse.List list = null;
 
-    public SearchEngine (String q){
+    public SearchEngine(String q) {
         query = q;
         start = Long.valueOf(1);
         num = Long.valueOf(10);
@@ -44,7 +44,7 @@ public class SearchEngine {
         try {
             list = customsearch.cse().list(query);
         } catch (IOException e) {
-            Log.e(SearchEngine.class.getSimpleName(),e.toString());
+            Log.e(SearchEngine.class.getSimpleName(), e.toString());
         }
         list.setKey("AIzaSyAamYR0fn4fU90UYoyO5r6epPTkkKg55Xw");
         list.setCx("006550512854887181422:hhghfbg29ie");
@@ -52,7 +52,7 @@ public class SearchEngine {
         list.setFileType("jpg");
         list.setGooglehost("google.com");
         list.setNum(num);
-        Log.d(SearchEngine.class.getSimpleName(),"SEARCH ENGINE IS CREATED");
+        Log.d(SearchEngine.class.getSimpleName(), "SEARCH ENGINE IS CREATED");
     }
 
     public synchronized List<ResultWrapper> getResult() {
@@ -69,13 +69,13 @@ public class SearchEngine {
             start += num;
 
         } catch (IOException e) {
-            Log.e(SearchEngine.class.getSimpleName(),e.toString());
+            Log.e(SearchEngine.class.getSimpleName(), e.toString());
         }
 
         return resultWrappers;
     }
 
-    private  ResultWrapper getWrapper(Result result) {
+    private ResultWrapper getWrapper(Result result) {
         JSONObject object = null;
         ResultWrapper resultWrapper = null;
         try {
@@ -87,21 +87,21 @@ public class SearchEngine {
             String title = object.getString("title");
             resultWrapper = new ResultWrapper(url, title);
         } catch (JSONException e) {
-            Log.e(SearchEngine.class.getSimpleName(),e.toString());
-            Log.e(SearchEngine.class.getSimpleName(),e.getMessage());
+            Log.e(SearchEngine.class.getSimpleName(), e.toString());
+            Log.e(SearchEngine.class.getSimpleName(), e.getMessage());
             return null;
         }
         return resultWrapper;
     }
 
-    private  List<ResultWrapper> getResultList(List<Result> items) {
+    private List<ResultWrapper> getResultList(List<Result> items) {
 
         ArrayList<ResultWrapper> resultWrappers = new ArrayList<ResultWrapper>();
         for (Result result : items) {
             ResultWrapper resultWrapper = getWrapper(result);
-            if(resultWrapper != null){
+            if (resultWrapper != null) {
                 resultWrappers.add(resultWrapper);
-                Log.i(SearchEngine.class.getSimpleName(),resultWrapper.toString());
+                Log.i(SearchEngine.class.getSimpleName(), resultWrapper.toString());
             }
         }
         return resultWrappers;

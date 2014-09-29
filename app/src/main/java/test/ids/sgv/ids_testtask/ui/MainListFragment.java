@@ -69,31 +69,34 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
         mainAdapter = new MainAdapter(getActivity());
         mListView.setAdapter(mainAdapter);
         String query = getArguments().getString("query");
-        if(query != null){
+        if (query != null) {
             searchEngine = new SearchEngine(query);
         }
         searchEngine = null;
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                currentScrollState = scrollState;
-                isScrollCompleted();
+//                currentScrollState = scrollState;
+//                isScrollCompleted();
             }
 
             @Override
             public void onScroll(AbsListView absListView, int first, int visibleItemCount, int totalItemCount) {
-                currentFirstVisibleItem = first;
-                currentVisibleItemCount = visibleItemCount;
+//                currentFirstVisibleItem = first;
+//                currentVisibleItemCount = visibleItemCount;
+                if (first + visibleItemCount >= totalItemCount - 1) {
+                    isScrollCompleted();
+                }
             }
         });
         this.setHasOptionsMenu(true);
-        getActivity().getSupportLoaderManager().initLoader(LIST_LOADER_CONST,null,this);
+        getActivity().getSupportLoaderManager().initLoader(LIST_LOADER_CONST, null, this);
         return view;
     }
 
     @Override
     public Loader<List<ResultWrapper>> onCreateLoader(int id, Bundle args) {
-        Log.d(MainListFragment.class.getSimpleName(), "OnCreateLoader");
+        Log.d(MainListFragment.class.getSimpleName(), "OnCreateLoader mainList");
 
         switch (id) {
             case LIST_LOADER_CONST:
@@ -106,7 +109,7 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<List<ResultWrapper>> loader, List<ResultWrapper> data) {
-        if(data != null){
+        if (data != null) {
             mainAdapter.setResultWrapperList(data);
         }
         Log.d(TAG, "OnLoaderFinished");
@@ -147,26 +150,29 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     }
 
     @Override
-    public boolean onOptionsItemSelected( MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.save:
                 Log.d(TAG, "SAVE");
-//                Log.d(TAG,  mainAdapter.getChosenItems().size()+" - size");
+                dao.createDatabase().openWritable();
+                dao.insertResultWrapper(mainAdapter.getChosenItems());
+                mainAdapter.saveImagesToSDCard(mainAdapter.getChosenItems());
                 mainAdapter.deselect();
-                dao.insertResultWrapper( mainAdapter.getChosenItems());
+                mainAdapter.notifyDataSetChanged();
                 return true;
 
-            default: return false;
+            default:
+                return false;
         }
     }
 
     private void isScrollCompleted() {
-        if (this.currentVisibleItemCount > 0 && this.currentScrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && !isLoading) {
-            Log.d(TAG, "End Of List");
+
+        Log.d(TAG, "End Of List");
+        //load data here
+        if (searchEngine != null) {
             isLoading = true;
-//            mListView.addFooterView(footer);
-            //load data here
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -178,15 +184,16 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
                 }
             }).start();
         }
+//        }
     }
 
     private class LoaderHandler extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
             if (msg.what == 1) {
-                Log.d(TAG,"Load data");
+                Log.d(TAG, "Load data");
                 List<ResultWrapper> wrapperList = (List<ResultWrapper>) msg.obj;
-                MainAdapter  mainAdapter1 = (MainAdapter) mListView.getAdapter();
+                MainAdapter mainAdapter1 = (MainAdapter) mListView.getAdapter();
                 mainAdapter1.addResults(wrapperList);
                 isLoading = false;
 //                mListView.removeFooterView(footer);
