@@ -30,7 +30,7 @@ import java.util.List;
 import test.ids.sgv.ids_testtask.R;
 import test.ids.sgv.ids_testtask.Utils;
 import test.ids.sgv.ids_testtask.ui.ImageViewerFragment;
-import test.ids.sgv.ids_testtask.ui.MyActivity;
+import test.ids.sgv.ids_testtask.ui.MianActivity;
 
 /**
  * Created by sgv on 21.09.2014.
@@ -94,8 +94,8 @@ public class MainAdapter extends BaseAdapter {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageViewerFragment newFragment =  ImageViewerFragment.newInstance(resultWrapper.getUrl());
-                FragmentTransaction transaction = ((MyActivity) context).getSupportFragmentManager().beginTransaction();
+                ImageViewerFragment newFragment = ImageViewerFragment.newInstance(resultWrapper.getUrl());
+                FragmentTransaction transaction = ((MianActivity) context).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.pager, newFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -145,10 +145,10 @@ public class MainAdapter extends BaseAdapter {
                 }
             }
         });
-       saveImages.start();
+        saveImages.start();
     }
 
-    public static Bitmap getImageByUrl(String url){
+    public static Bitmap getImageByUrl(String url) {
 
         Bitmap result = null;
         File imgFile = new File(url);

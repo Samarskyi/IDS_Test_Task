@@ -3,7 +3,6 @@ package test.ids.sgv.ids_testtask.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Environment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import java.io.File;
 
 import test.ids.sgv.ids_testtask.R;
 import test.ids.sgv.ids_testtask.db.DatabaseHelper;
-import test.ids.sgv.ids_testtask.ui.ImageViewerFragment;
-import test.ids.sgv.ids_testtask.ui.MyActivity;
 
 /**
  * Created by sgv on 28.09.2014.
@@ -31,7 +28,6 @@ public class FavoriteAdapter extends CursorAdapter {
 
     public FavoriteAdapter(Context context, Cursor cursor) {
         super(context, cursor, FLAG_REGISTER_CONTENT_OBSERVER);
-        Log.d("!!!!!", "FAVORITE ADAPTER");
         mContext = context;
 
         path = Environment.getExternalStorageDirectory() +
@@ -52,12 +48,12 @@ public class FavoriteAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         TextView title = (TextView) view.findViewById(R.id.title);
         ImageView image = (ImageView) view.findViewById(R.id.img);
         title.setText(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TITLE_COLUMN)));
-        Log.d("Name" , cursor.getString(3));
-        Log.d("Path" ,path + cursor.getString(3));
+        Log.d("Name", cursor.getString(3));
+        Log.d("Path", path + cursor.getString(3));
         Picasso.with(context)
                 .load(new File(path + cursor.getString(3)))
                 .resize(70, 70)
@@ -66,11 +62,7 @@ public class FavoriteAdapter extends CursorAdapter {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageViewerFragment newFragment =  ImageViewerFragment.newInstance("http://img1.wikia.nocookie.net/__cb20140605235628/disney/images/e/ee/Jake_and_the_Never_Land_Pirates_Battle_for_the_Book.jpg");
-                FragmentTransaction transaction = ((MyActivity) mContext).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.main, newFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                //TODO show big image in new fragment
             }
         });
 

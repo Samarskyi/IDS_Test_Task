@@ -32,9 +32,6 @@ import test.ids.sgv.ids_testtask.model.SearchEngine;
 public class MainListFragment extends SherlockFragment implements LoaderManager.LoaderCallbacks<List<ResultWrapper>> {
 
     private ListView mListView;
-    private int currentFirstVisibleItem;
-    private int currentVisibleItemCount;
-    private int currentScrollState;
     private boolean isLoading;
     private LoaderHandler mHandler;
     private SearchEngine searchEngine;
@@ -70,25 +67,22 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
         mListView.setAdapter(mainAdapter);
         String query = getArguments().getString("query");
         if (query != null) {
-            searchEngine = new SearchEngine(query);
+            searchEngine = new SearchEngine(query, getActivity());
         }
         searchEngine = null;
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-//                currentScrollState = scrollState;
-//                isScrollCompleted();
             }
 
             @Override
             public void onScroll(AbsListView absListView, int first, int visibleItemCount, int totalItemCount) {
-//                currentFirstVisibleItem = first;
-//                currentVisibleItemCount = visibleItemCount;
                 if (first + visibleItemCount >= totalItemCount - 1) {
                     isScrollCompleted();
                 }
             }
         });
+
         this.setHasOptionsMenu(true);
         getActivity().getSupportLoaderManager().initLoader(LIST_LOADER_CONST, null, this);
         return view;
@@ -125,7 +119,7 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        MyActivity activity = (MyActivity) getActivity();
+        MianActivity activity = (MianActivity) getActivity();
         activity.getSupportMenuInflater().inflate(R.menu.menu, menu);
         SearchManager searchManager = (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
@@ -141,7 +135,7 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
 
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, query);
-                searchEngine = new SearchEngine(query);
+                searchEngine = new SearchEngine(query,getActivity());
                 MainListFragment.this.getLoaderManager().restartLoader(LIST_LOADER_CONST, null, MainListFragment.this);
                 return true;
             }
@@ -170,7 +164,6 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
     private void isScrollCompleted() {
 
         Log.d(TAG, "End Of List");
-        //load data here
         if (searchEngine != null) {
             isLoading = true;
             new Thread(new Runnable() {
@@ -184,7 +177,6 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
                 }
             }).start();
         }
-//        }
     }
 
     private class LoaderHandler extends Handler {
@@ -196,7 +188,6 @@ public class MainListFragment extends SherlockFragment implements LoaderManager.
                 MainAdapter mainAdapter1 = (MainAdapter) mListView.getAdapter();
                 mainAdapter1.addResults(wrapperList);
                 isLoading = false;
-//                mListView.removeFooterView(footer);
             }
         }
     }

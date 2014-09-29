@@ -1,5 +1,6 @@
 package test.ids.sgv.ids_testtask.model;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.api.client.http.HttpRequest;
@@ -21,6 +22,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import test.ids.sgv.ids_testtask.R;
+
 /**
  * Created by sgv on 21.09.14.
  */
@@ -30,8 +33,10 @@ public class SearchEngine {
     long start = 0;
     long num = 0;
     Customsearch.Cse.List list = null;
+    Context context;
 
-    public SearchEngine(String q) {
+    public SearchEngine(String q, Context context) {
+        this.context = context;
         query = q;
         start = Long.valueOf(1);
         num = Long.valueOf(10);
@@ -46,11 +51,12 @@ public class SearchEngine {
         } catch (IOException e) {
             Log.e(SearchEngine.class.getSimpleName(), e.toString());
         }
-        list.setKey("AIzaSyAamYR0fn4fU90UYoyO5r6epPTkkKg55Xw");
-        list.setCx("006550512854887181422:hhghfbg29ie");
+
+        list.setKey(context.getResources().getString(R.string.key));
+        list.setCx(context.getResources().getString(R.string.cx));
         list.setStart(start);
-        list.setFileType("jpg");
-        list.setGooglehost("google.com");
+        list.setFileType(context.getResources().getString(R.string.type));
+        list.setGooglehost(context.getResources().getString(R.string.host));
         list.setNum(num);
         Log.d(SearchEngine.class.getSimpleName(), "SEARCH ENGINE IS CREATED");
     }

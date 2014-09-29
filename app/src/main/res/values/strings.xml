@@ -2,9 +2,12 @@
 <resources>
 
     <string name="app_name">IDS_TestTask</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="inlineSearch">name</string>
 
+    <string name="key">AIzaSyAamYR0fn4fU90UYoyO5r6epPTkkKg55Xw</string>
+    <string name="cx">006550512854887181422:hhghfbg29ie</string>
+    <string name="type">jpg</string>
+    <string name="host">google.com</string>
 </resources>

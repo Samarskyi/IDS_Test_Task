@@ -23,7 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "main.sqlite";
     private static final int DATABASE_VERSION = 3;
 
-//    public static final String DATABASE_TABLE_MAIN = "list";
     public static final String DATABASE_TABLE_FAVORITE = "favoriteList";
 
     private static String DB_PATH = "";
@@ -46,7 +45,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void createDataBase() throws IOException {
         //If database not exists copy it from the assets
-
         boolean mDataBaseExist = checkDataBase();
         if (!mDataBaseExist) {
             this.getReadableDatabase();
@@ -108,10 +106,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-  //    sqLiteDatabase.rawQuery(CREATE_FAVORITE_SCRIPT,null);
-//        Log.d("CREATE SCRIPT",CREATE_FAVORITE_SCRIPT);
-//        sqLiteDatabase.execSQL(CREATE_FAVORITE_SCRIPT);
-//        sqLiteDatabase.rawQuery("insert into " + DATABASE_TABLE_FAVORITE + " values(1, 'taralal' , 'tytytyty')",null);
     }
 
     @Override

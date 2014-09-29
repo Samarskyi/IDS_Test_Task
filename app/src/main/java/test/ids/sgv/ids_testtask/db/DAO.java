@@ -96,15 +96,4 @@ public class DAO {
         mDbHelper.close();
     }
 
-    public void addSomeItems() {
-        mSqLiteDatabaseWrite = mDbHelper.getWritableDatabase();
-        ContentValues newValues = new ContentValues();
-        newValues.put(DatabaseHelper.URL_COLUMN, "taralala");
-        newValues.put(DatabaseHelper.TITLE_COLUMN, "tralalal");
-        mSqLiteDatabaseWrite.insert(DatabaseHelper.DATABASE_TABLE_FAVORITE, null, newValues);
-
-        Log.d(TAG, "data write");
-        mSqLiteDatabaseWrite.close();
-    }
-
 }

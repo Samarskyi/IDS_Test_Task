@@ -28,12 +28,11 @@ public class DataLoader extends AsyncTaskLoader<List<ResultWrapper>> {
 
     @Override
     public List<ResultWrapper> loadInBackground() {
-        if(searchEngine != null){
+        if (searchEngine != null) {
             List<ResultWrapper> wrapperList = searchEngine.getResult();
             this.wrapperList = wrapperList;
             return this.wrapperList;
-        }
-       else return  null;
+        } else return null;
     }
 
     @Override
@@ -89,9 +88,11 @@ public class DataLoader extends AsyncTaskLoader<List<ResultWrapper>> {
         // Attempt to cancel the current load task if possible.
         cancelLoad();
     }
+
     /**
      * Helper function to take care of releasing resources associated
      * with an actively loaded data set.
      */
-    protected void onReleaseResources(List<ResultWrapper> apps) {}
+    protected void onReleaseResources(List<ResultWrapper> apps) {
+    }
 }

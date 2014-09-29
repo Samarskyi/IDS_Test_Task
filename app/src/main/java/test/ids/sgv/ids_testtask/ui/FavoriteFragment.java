@@ -43,15 +43,15 @@ public class FavoriteFragment extends SherlockFragment implements LoaderManager.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, null);
 
         dao = new DAO(getActivity());
         mListView = (ListView) view.findViewById(R.id.list);
-        mFavoriteAdapter = new FavoriteAdapter(getActivity(),null);
+        mFavoriteAdapter = new FavoriteAdapter(getActivity(), null);
         mListView.setAdapter(mFavoriteAdapter);
 
-        Log.d(TAG,"On CREATE FAVORITE ");
+        Log.d(TAG, "On CREATE FAVORITE ");
         getActivity().getSupportLoaderManager().initLoader(FAVORITE_LOADER_CONST, null, this).forceLoad();
         return view;
     }

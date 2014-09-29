@@ -9,7 +9,6 @@ import android.view.View;
 public class ImageClickListener implements View.OnClickListener {
 
 
-
     public ImageClickListener(Context context, String url) {
     }
 
@@ -17,7 +16,7 @@ public class ImageClickListener implements View.OnClickListener {
     public void onClick(View view) {
 
 //            ImageViewerFragment newFragment =  ImageViewerFragment.newInstance(resultWrapper.getUrl());
-//            FragmentTransaction transaction = ((MyActivity) context).getSupportFragmentManager().beginTransaction();
+//            FragmentTransaction transaction = ((MianActivity) context).getSupportFragmentManager().beginTransaction();
 //            transaction.replace(R.id.pager, newFragment);
 //            transaction.addToBackStack(null);
 //            transaction.commit();

@@ -39,7 +39,8 @@ public class ImageViewerFragment extends SherlockFragment {
 
         View view = inflater.inflate(R.layout.image_viewer_fragment, null);
         String url = getArguments().getString("url");
-        Log.d(ImageViewerFragment.class.getSimpleName(),url);
+        Log.d(ImageViewerFragment.class.getSimpleName(), url);
+
         mImageView = (ImageView) view.findViewById(R.id.image);
 //        Picasso.with(getActivity())
 //                .load(url)
